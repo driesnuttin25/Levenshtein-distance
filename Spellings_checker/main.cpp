@@ -5,7 +5,10 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -13,15 +16,41 @@ int levenshtein(const std::string &s1, int string_length1, const std::string &s2
 
 int main()
 {
-    std::string string1, string2;
-    cout << "Enter string 1: ";
-    cin >> string1;
-    cout << "Enter string 2: ";
-    cin >> string2;
+    std::string userInput;
+    cout << "Enter a word: ";
+    cin >> userInput;
 
-    int distance = levenshtein(string1, string1.length(), string2, string2.length());
-    printf("Distance between `%s' and `%s': %d\n", string1.c_str(), string2.c_str(), distance);
+    ifstream dictionaryFile("C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/Spellings_checker/dictionary.txt");
+    std::string word;
+    vector<string> closestWords;
+    int minDistance = numeric_limits<int>::max();
 
+    if (!dictionaryFile.is_open()) {
+        cerr << "Failed to open dictionary.txt" << endl;
+        return 1;
+    }
+
+    while (getline(dictionaryFile, word)) {
+        int distance = levenshtein(userInput, userInput.length(), word, word.length());
+        if(distance == 0){
+            cout << endl << "This word is spelled correctly"<< endl;
+            return 0;
+        }
+        else if (distance < minDistance) {
+            minDistance = distance;
+            closestWords.clear();
+            closestWords.push_back(word);
+        } else if (distance == minDistance) {
+            closestWords.push_back(word);
+        }
+    }
+
+    dictionaryFile.close();
+
+    cout << endl << "Closest word(s) to '" << userInput << "' with a distance of " << minDistance << ":" << endl;
+    for (const auto &closestWord : closestWords) {
+        cout << closestWord << endl;
+    }
     return 0;
 }
 
