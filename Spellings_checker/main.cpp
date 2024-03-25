@@ -52,6 +52,10 @@ int main() {
     cout << "\nOriginal sentence: " << userInput << endl;
     cout << "Corrected sentence: " << correctedSentence << endl;
 
+    while(1){
+
+    }
+
     return 0;
 }
 
@@ -114,6 +118,7 @@ string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile) {
         }
     }
 
-    // Assuming the first closest word is the desired correction
+// At the moment we're just going to assume that the word with the least Levenshtein distance is the correct word,
+// not very efficient in finding the actual correct word but works well enough for now
     return closestWords.empty() ? inputWord : closestWords.front();
 }

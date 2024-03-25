@@ -1,7 +1,0 @@
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/Spellings_checker.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/install.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
-C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/build-Spellings_checker-Desktop_Qt_6_5_3_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
