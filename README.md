@@ -1,16 +1,83 @@
-# Levenshtein-distance
-This is a repository to test my simplistic spellingschecker
+# Levenshtein Distance Spell Checker
 
-The Levenshtein distance is a number that tells you how different two strings are. The higher the number, the more different the two strings are.
+Welcome to the Levenshtein Distance Spell Checker repository. This project utilizes the Levenshtein distance algorithm to create a simplistic but effective spell checker. The Levenshtein distance measures the minimum number of single-character edits required to change one word into another, providing a quantitative basis for spell checking.
 
-For example, the Levenshtein distance between “kitten” and “sitting” is 3 since, at a minimum, 3 edits are required to change one into the other.
+## Understanding Levenshtein Distance
+The Levenshtein distance between two strings is a measure of their dissimilarity, calculated as the minimum number of single-character edits needed to transform one string into the other. These edits include insertions, deletions, or substitutions.
 
-- kitten → sitten (substitution of “s” for “k”)
-- sitten → sittin (substitution of “i” for “e”)
-- sittin → sitting (insertion of “g” at the end).
+## Example:
+Transforming "kitten" into "sitting":
+- kitten → sitten (substitute "s" for "k")
+- sitten → sittin (substitute "i" for "e")
+- sittin → sitting (insert "g" at the end)
+This results in a Levenshtein distance of 3, indicating three edit operations are required.
 
-This means that you can have a list of words that do exist, and the word that the user types out.
-If the word has a Levenshtein distance of 0 in comparison to a word in the list, it would mean that this word is spelled correctly.
-If this is not the case it means that the lowest Levenshtein distance in the list is the word it is most likely to be as this would require the least alterations.
+## Spell Checking with Levenshtein Distance
+The spell checker compares each word in a user-input sentence against a predefined list of correctly spelled words. If a word matches exactly (Levenshtein distance of 0), it is considered correctly spelled. Otherwise, the checker suggests the closest match from the list, minimizing the Levenshtein distance and, consequently, the necessary edits.
+This is all based on the Levenshtein algorithm which is mathametically structured as the following:
 
-![image](https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/1a8c91b1-1374-421f-aecd-4c80fc2f1a40)
+![image](https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/089d3d4f-e29f-4211-b446-bce3c584739d)
+
+When we take this mathematical algorithm and tranfser it to a c++ code we can get the following function:
+
+```c++
+int levenshtein(const std::string &s1, int string_length1, const std::string &s2, int string_length2)
+{
+    int sub, insert, del;
+    // Check if the string is empty or not, if it is empty it would require the length of the other string as the amount of deletions to become the first string.
+    if (string_length1 == 0)
+    {
+        return string_length2;
+    }
+    if (string_length2 == 0)
+    {
+        return string_length1;
+    }
+
+    // If the last letter is the same for both strings, we can skip this as there is no operation needed
+    if (s1[string_length1 - 1] == s2[string_length2 - 1])
+    {
+        return levenshtein(s1, string_length1 - 1, s2, string_length2 - 1);
+    }
+
+    // Going through the string and checking if a substitution, an insertion, or a deletion needs to take place.
+    sub = levenshtein(s1, string_length1 - 1, s2, string_length2 - 1);
+    insert = levenshtein(s1, string_length1, s2, string_length2 - 1);
+    del = levenshtein(s1, string_length1 - 1, s2, string_length2);
+
+    // Check which method is superior
+    if (sub > insert)
+    {
+        sub = insert;
+    }
+    if (sub > del)
+    {
+        sub = del;
+    }
+
+    // Return plus 1 to account for the last action performed
+    return sub + 1;
+}
+```
+
+
+## Example 
+
+Given the sentence:
+
+``` this is a test to see if this program works ```
+
+now let'S make a couple mistakes in it to see if the program works
+
+``` thiss is a trst to see if thisp progwam workss ```
+
+The spell checker will suggest corrections based on the smallest Levenshtein distance to known, correctly spelled words.
+This we can also see when we run the code, giving us the following resutl: 
+
+<img width="365" alt="image" src="https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/161e42bc-111e-4f07-be2a-17ad2884ab15">
+
+
+
+
+
+
