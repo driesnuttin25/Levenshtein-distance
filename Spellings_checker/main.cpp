@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <limits>
@@ -13,44 +14,44 @@
 using namespace std;
 
 int levenshtein(const std::string &s1, int string_length1, const std::string &s2, int string_length2);
+string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile);
 
-int main()
-{
+int main() {
+    cout << "Enter a sentence: ";
     std::string userInput;
-    cout << "Enter a word: ";
-    cin >> userInput;
+    getline(cin, userInput);
 
     ifstream dictionaryFile("C:/Users/dries/OneDrive/Desktop/git/Levenshtein-distance/Spellings_checker/dictionary.txt");
-    std::string word;
-    vector<string> closestWords;
-    int minDistance = numeric_limits<int>::max();
 
     if (!dictionaryFile.is_open()) {
         cerr << "Failed to open dictionary.txt" << endl;
         return 1;
     }
 
-    while (getline(dictionaryFile, word)) {
-        int distance = levenshtein(userInput, userInput.length(), word, word.length());
-        if(distance == 0){
-            cout << endl << "This word is spelled correctly"<< endl;
-            return 0;
-        }
-        else if (distance < minDistance) {
-            minDistance = distance;
-            closestWords.clear();
-            closestWords.push_back(word);
-        } else if (distance == minDistance) {
-            closestWords.push_back(word);
+    std::istringstream iss(userInput);
+    std::string word;
+    std::string correctedSentence;
+    std::string originalWord;
+    bool isFirstWord = true;
+
+    while (iss >> word) {
+        originalWord = word;
+        string correctedWord = findClosestWord(word, dictionaryFile);
+
+        // For constructing the corrected sentence
+        if (!isFirstWord) correctedSentence += " ";
+        correctedSentence += correctedWord;
+        isFirstWord = false;
+
+        // Output if the word was corrected
+        if (originalWord != correctedWord) {
+            cout << "Corrected '" << originalWord << "' to '" << correctedWord << "'" << endl;
         }
     }
 
-    dictionaryFile.close();
+    cout << "\nOriginal sentence: " << userInput << endl;
+    cout << "Corrected sentence: " << correctedSentence << endl;
 
-    cout << endl << "Closest word(s) to '" << userInput << "' with a distance of " << minDistance << ":" << endl;
-    for (const auto &closestWord : closestWords) {
-        cout << closestWord << endl;
-    }
     return 0;
 }
 
@@ -90,4 +91,29 @@ int levenshtein(const std::string &s1, int string_length1, const std::string &s2
 
     // Return plus 1 to account for the last action performed
     return sub + 1;
+}
+
+// Function to find the closest word in the dictionary for a given word
+string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile) {
+    dictionaryFile.clear();
+    dictionaryFile.seekg(0, ios::beg);
+
+    std::string dictionaryWord;
+    vector<string> closestWords;
+    int minDistance = numeric_limits<int>::max();
+
+    while (getline(dictionaryFile, dictionaryWord)) {
+        int distance = levenshtein(inputWord, inputWord.length(), dictionaryWord, dictionaryWord.length());
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestWords.clear();
+            closestWords.push_back(dictionaryWord);
+        } else if (distance == minDistance) {
+            closestWords.push_back(dictionaryWord);
+        }
+    }
+
+    // Assuming the first closest word is the desired correction
+    return closestWords.empty() ? inputWord : closestWords.front();
 }
