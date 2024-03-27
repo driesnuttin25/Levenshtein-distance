@@ -14,6 +14,7 @@ This results in a Levenshtein distance of 3, indicating three edit operations ar
 
 ## Spell Checking with Levenshtein Distance
 The spell checker compares each word in a user-input sentence against a predefined list of correctly spelled words. If a word matches exactly (Levenshtein distance of 0), it is considered correctly spelled. Otherwise, the checker suggests the closest match from the list, minimizing the Levenshtein distance and, consequently, the necessary edits.
+For the code that I made today I used a file called dictionary.txt to include all correctly spelled words to check if a word is misspelled and if it is see what other word has the least Levenshtein distance and use that as a replacement. The dictionary.txt file includes a total of 20K of the most used words in the English language.
 This is all based on the Levenshtein algorithm which is mathametically structured as the following:
 
 ![image](https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/089d3d4f-e29f-4211-b446-bce3c584739d)
