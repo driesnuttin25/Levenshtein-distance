@@ -10,8 +10,10 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 int levenshtein(const std::string &s1, int string_length1, const std::string &s2, int string_length2);
 string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile);
@@ -34,6 +36,9 @@ int main() {
     std::string originalWord;
     bool isFirstWord = true;
 
+    // Start timing
+    auto start = high_resolution_clock::now();
+
     while (iss >> word) {
         originalWord = word;
         string correctedWord = findClosestWord(word, dictionaryFile);
@@ -49,15 +54,19 @@ int main() {
         }
     }
 
+    // End timing
+    auto end = high_resolution_clock::now();
+
     cout << "\nOriginal sentence: " << userInput << endl;
     cout << "Corrected sentence: " << correctedSentence << endl;
 
-    while(1){
-
-    }
+    // Calculate and print the duration
+    auto duration = duration_cast<milliseconds>(end - start);
+    cout << "Execution time: " << duration.count() << " milliseconds" << endl;
 
     return 0;
 }
+
 
 int levenshtein(const std::string &s1, int string_length1, const std::string &s2, int string_length2)
 {
@@ -107,7 +116,10 @@ string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile) {
     int minDistance = numeric_limits<int>::max();
 
     while (getline(dictionaryFile, dictionaryWord)) {
-        int distance = levenshtein(inputWord, inputWord.length(), dictionaryWord, dictionaryWord.length());
+        int lengthDifference = abs(static_cast<int>(inputWord.length()) - static_cast<int>(dictionaryWord.length()));
+
+        if (lengthDifference <= 1) {
+            int distance = levenshtein(inputWord, inputWord.length(), dictionaryWord, dictionaryWord.length());
 
         if (distance < minDistance) {
             minDistance = distance;
@@ -117,6 +129,7 @@ string findClosestWord(const std::string &inputWord, ifstream &dictionaryFile) {
             closestWords.push_back(dictionaryWord);
         }
     }
+}
 
 // At the moment we're just going to assume that the word with the least Levenshtein distance is the correct word,
 // not very efficient in finding the actual correct word but works well enough for now
