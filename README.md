@@ -77,6 +77,25 @@ This we can also see when we run the code, giving us the following resutl:
 
 <img width="365" alt="image" src="https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/161e42bc-111e-4f07-be2a-17ad2884ab15">
 
+## Improvements
+we can improve this code further by including a distance checker to make sure the length of the two words being searched for is not greater than a specific integer. If the user input is either much smaller or much bigger than the word being searched, it is best to avoid going through the entire function. This is why we can add the following lines:
+
+```cpp
+int lengthDifference = abs(static_cast<int>(inputWord.length()) - static_cast<int>(dictionaryWord.length()));
+
+        if (lengthDifference <= 1) {
+            int distance = levenshtein(inputWord, inputWord.length(), dictionaryWord, dictionaryWord.length());
+```
+
+With these 3 added lines, we can see a huge improvement in the speed of the program as it does not have to compare for instance 'Horse' against 'Gathering'.
+All cases were tested with the following sentence: 
+```thiss ids a tezt to zee if this progwam workss```
+
+This will lead to the following chronological times, if using either a length difference of 1 or 2:
+
+![image](https://github.com/driesnuttin25/Levenshtein-distance/assets/114076101/3e9bb3e3-a825-455a-ba51-1b707cb80da3)
+
+As you can see these 3 added lines improve the code by a factor of ```7.2```
 
 
 
