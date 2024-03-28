@@ -24,8 +24,8 @@ int main() {
         // Input from user
         while(1){
             string variableWord;
-            cout << endl << "Enter a word: ";
-            cin >> variableWord;
+            cout << endl << "Enter a word or a sentence: ";
+            getline(cin, variableWord);
             if(variableWord == "exit"){
                 cout << endl << "Thank you for using the spellings checker :)";
                 return 0;

@@ -33,10 +33,23 @@ int main() {
             subscriber.recv(&message);
             string receivedMessage(static_cast<char*>(message.data()), message.size());
             cout << "Received: [" << receivedMessage << "]" << endl;
-            string word = receivedMessage.substr(subscribeTopic.length(), receivedMessage.find_last_of(">") - subscribeTopic.length());
-            string correctedWord = findClosestWord(word, dictionaryFile);
-            string response = "dries>correct>" + correctedWord + ">";
+
+            string sentence = receivedMessage.substr(subscribeTopic.length(), receivedMessage.find_last_of(">") - subscribeTopic.length());
+
+            istringstream iss(sentence);
+            string word, correctedSentence, correctedWord;
+            bool isFirstWord = true;
+            while (iss >> word) {
+                correctedWord = findClosestWord(word, dictionaryFile);
+                if (!isFirstWord) correctedSentence += " ";
+                correctedSentence += correctedWord;
+                isFirstWord = false;
+            }
+
+            // Send the corrected sentence back
+            string response = "dries>correct>" + correctedSentence + ">";
             responder.send(response.c_str(), response.size());
+            cout << "Sent [" << response << "]" << endl;
         }
     }
     catch(zmq::error_t& e) {
