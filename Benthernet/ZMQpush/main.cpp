@@ -21,7 +21,6 @@ int main() {
         subscriber.setsockopt(ZMQ_SUBSCRIBE, responseTopic.c_str(), responseTopic.length());
         cout << "[Write 'exit' to exit the code]" << endl;
 
-        // Input from user
         while(1){
             string variableWord;
             cout << endl << "Enter a word or a sentence: ";
@@ -31,12 +30,11 @@ int main() {
                 return 0;
             }
 
-            // Construct and send message
             string message = "dries>spelling>" + variableWord + ">";
             pusher.send(message.c_str(), message.size());
             cout << "Sent: [" << message << "]" << endl;
 
-            // Listen for response
+
             zmq::message_t response;
             subscriber.recv(&response);
             string receivedResponse(static_cast<char*>(response.data()), response.size());

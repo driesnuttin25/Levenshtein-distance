@@ -1,4 +1,13 @@
 # ninja log v5
 7	967	7332294217770195	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+1	247	7333340389852492	build.ninja	3ea921ebcb15b179
 968	1146	7332294219537712	Spellings_checker.exe	fc740b02e171c8a8
-1	247	7332348563753515	build.ninja	3ea921ebcb15b179
+2	1343	7354888883994528	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+2	634	7354889583500303	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+635	738	7354889584501602	Spellings_checker.exe	fc740b02e171c8a8
+2	645	7354891785967579	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+645	744	7354891786890320	Spellings_checker.exe	fc740b02e171c8a8
+3	684	7354891928787860	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+684	788	7354891929793718	Spellings_checker.exe	fc740b02e171c8a8
+2	766	7354892233247382	CMakeFiles/Spellings_checker.dir/main.cpp.obj	157aa2550b44b94d
+767	870	7354892234282567	Spellings_checker.exe	fc740b02e171c8a8

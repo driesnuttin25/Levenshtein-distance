@@ -59,43 +59,27 @@ int main() {
     return 0;
 }
 
-int levenshtein(const string &s1, int string_length1, const string &s2, int string_length2)
-{
-    int sub, insert, del;
-    // Check if the string is empty or not, if it is empty it would require the length of the other string as the amount of deletions to become the first string.
-    if (string_length1 == 0)
-    {
-        return string_length2;
+int levenshteinDP(const std::string& s1, const std::string& s2) {
+    int len1 = s1.size(), len2 = s2.size();
+    std::vector<std::vector<int>> dp(len1 + 1, std::vector<int>(len2 + 1));
+
+    for (int i = 0; i <= len1; ++i) {
+        dp[i][0] = i;
     }
-    if (string_length2 == 0)
-    {
-        return string_length1;
+    for (int j = 0; j <= len2; ++j) {
+        dp[0][j] = j;
     }
 
-    // If the last letter is the same for both strings, we can skip this as there is no operation needed
-    if (s1[string_length1 - 1] == s2[string_length2 - 1])
-    {
-        return levenshtein(s1, string_length1 - 1, s2, string_length2 - 1);
+    for (int i = 1; i <= len1; ++i) {
+        for (int j = 1; j <= len2; ++j) {
+            int cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1;
+            dp[i][j] = std::min({dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost});
+        }
     }
 
-    // Going through the string and checking if a substitution, an insertion, or a deletion needs to take place.
-    sub = levenshtein(s1, string_length1 - 1, s2, string_length2 - 1);
-    insert = levenshtein(s1, string_length1, s2, string_length2 - 1);
-    del = levenshtein(s1, string_length1 - 1, s2, string_length2);
-
-    // Check which method is superior
-    if (sub > insert)
-    {
-        sub = insert;
-    }
-    if (sub > del)
-    {
-        sub = del;
-    }
-
-    // Return plus 1 to account for the last action performed
-    return sub + 1;
+    return dp[len1][len2];
 }
+
 
 // Function to find the closest word in the dictionary for a given word
 string findClosestWord(const string &inputWord, ifstream &dictionaryFile) {
@@ -109,8 +93,8 @@ string findClosestWord(const string &inputWord, ifstream &dictionaryFile) {
     while (getline(dictionaryFile, dictionaryWord)) {
         int lengthDifference = abs(static_cast<int>(inputWord.length()) - static_cast<int>(dictionaryWord.length()));
 
-        if (lengthDifference <= 1) {
-            int distance = levenshtein(inputWord, inputWord.length(), dictionaryWord, dictionaryWord.length());
+        if (lengthDifference <= 2) {
+            int distance = levenshteinDP(inputWord, dictionaryWord);
 
             if (distance < minDistance) {
                 minDistance = distance;
